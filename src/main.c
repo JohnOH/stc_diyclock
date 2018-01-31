@@ -76,8 +76,9 @@ uint16_t temp;    // temperature sensor value
 uint8_t lightval;   // light sensor value
 __bit  beep = 1;
 
-struct ds1302_rtc rtc;
-struct ram_config config;
+// declared globally 
+extern ds1302_rtc_t rtc;
+extern ram_config_t config;
 
 volatile uint8_t displaycounter;
 uint8_t dbuf[4];     // led display buffer
@@ -186,7 +187,7 @@ int main()
     // init rtc
     ds_init();
     // init/read ram config
-    ds_ram_config_init((uint8_t *) &config);    
+    ds_ram_config_init();    
     
     // uncomment in order to reset minutes and hours to zero.. Should not need this.
     //ds_reset_clock();    
@@ -214,7 +215,7 @@ int main()
 
       }       
 
-      ds_readburst((uint8_t *) &rtc); // read rtc
+      ds_readburst(); // read rtc
 
       // display decision tree
       switch (dmode) {
@@ -224,7 +225,7 @@ int main()
               flash_hours = !flash_hours;
               if (! flash_hours) {
                   if (getkeypress(S2)) {
-                      ds_hours_incr(&rtc);
+                      ds_hours_incr();
                   }
                   if (getkeypress(S1))
                       dmode = M_SET_MINUTE;
@@ -236,7 +237,7 @@ int main()
               flash_minutes = !flash_minutes;
               if (! flash_minutes) {
                   if (getkeypress(S2)) {
-                      ds_minutes_incr(&rtc);
+                      ds_minutes_incr();
                   }
                   if (getkeypress(S1))
                       dmode = M_SET_HOUR_12_24;
@@ -245,7 +246,7 @@ int main()
 
           case M_SET_HOUR_12_24:
               if (getkeypress(S2))
-                  ds_hours_12_24_toggle(&rtc);
+                  ds_hours_12_24_toggle();
               if (getkeypress(S1))
                   dmode = M_NORMAL;
               break;
@@ -268,7 +269,7 @@ int main()
               flash_month = !flash_month;
               if (! flash_month) {
                   if (getkeypress(S2)) {
-                      ds_month_incr(&rtc);
+                      ds_month_incr();
                   }
                   if (getkeypress(S1)) {
                       flash_month = 0;
@@ -281,7 +282,7 @@ int main()
               flash_day = !flash_day;
               if (! flash_day) {
                   if (getkeypress(S2)) {
-                      ds_day_incr(&rtc);
+                      ds_day_incr();
                   }
                   if (getkeypress(S1)) {
                       flash_day = 0;
@@ -292,7 +293,7 @@ int main()
               
           case M_WEEKDAY_DISP:
               if (getkeypress(S1))
-                  ds_weekday_incr(&rtc);
+                  ds_weekday_incr();
               if (getkeypress(S2))
                   dmode = M_NORMAL;
               break;
@@ -392,7 +393,7 @@ int main()
       }
                   
       // save ram config
-      ds_ram_config_write((uint8_t *) &config); 
+      ds_ram_config_write(); 
       _delay_ms(40);
       count++;
       WDT_CLEAR();

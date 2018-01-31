@@ -32,7 +32,7 @@
 #define HOUR_24      0
 #define HOUR_12      1
 
-typedef struct ds1302_rtc {
+typedef struct  {
     // inspiration from http://playground.arduino.cc/Main/DS1302
     // 8 bytes, must keep aligned to rtc structure. Data fields are bcd
     
@@ -84,12 +84,12 @@ typedef struct ds1302_rtc {
     
     uint8_t reserved:7;    
     uint8_t write_protect:1;
-};
+} ds1302_rtc_t;
 
 #define TEMP_C       0
 #define TEMP_F       1
 
-typedef struct ram_config {
+typedef struct  {
     // ram config stored in rtc
     // must keep these fields 4 bytes, aligned
     
@@ -106,11 +106,11 @@ typedef struct ram_config {
 
     uint8_t   chime_hour_stop:5;
     uint8_t   reserved3:3;
-};
+} ram_config_t;
 
-void ds_ram_config_init(uint8_t config[4]);
+void ds_ram_config_init();
 
-void ds_ram_config_write(uint8_t config[4]);
+void ds_ram_config_write();
 
 
 void ds_writebit(__bit b);
@@ -121,7 +121,7 @@ __bit ds_readbit();
 uint8_t ds_readbyte(uint8_t addr);
 
 // ds1302 burst-read 8 bytes into struct
-void ds_readburst(uint8_t time[8]);
+void ds_readburst();
 
 // ds1302 single-byte write
 uint8_t ds_writebyte(uint8_t addr, uint8_t data);
@@ -133,21 +133,21 @@ void ds_init();
 void ds_reset_clock();
 
 // toggle 12/24 hour mode
-void ds_hours_12_24_toggle(struct ds1302_rtc* rtc);
+void ds_hours_12_24_toggle();
     
 // increment hours
-void ds_hours_incr(struct ds1302_rtc* rtc);
+void ds_hours_incr();
 
 // increment minutes
-void ds_minutes_incr(struct ds1302_rtc* rtc);
+void ds_minutes_incr();
 
 // increment month
-void ds_month_incr(struct ds1302_rtc* rtc);
+void ds_month_incr();
 
 // increment day
-void ds_day_incr(struct ds1302_rtc* rtc);
+void ds_day_incr();
 
-void ds_weekday_incr(struct ds1302_rtc* rtc);
+void ds_weekday_incr();
     
 // split bcd to int
 uint8_t ds_split2int(uint8_t tens, uint8_t ones);

@@ -1,6 +1,7 @@
-SDCCOPTS ?= --iram-size 256 --code-size 4089 --xram-size 0
+SDCC ?= sdcc
+SDCCOPTS ?= --iram-size 256 --code-size 4089 --xram-size 0 --opt-code-size --peep-asm --peep-return --std-sdcc11
 STCGAL ?= stcgal/stcgal.py
-STCGALOPTS ?= 
+STCGALOPTS ?= -P stc15a 
 STCGALPORT ?= /dev/ttyUSB0
 FLASHFILE ?= main.hex
 SYSCLK ?= 11059
@@ -13,14 +14,14 @@ all: main
 
 build/%.rel: src/%.c
 	mkdir -p $(dir $@)
-	sdcc $(SDCCOPTS) -o $@ -c $<
+	$(SDCC) $(SDCCOPTS) -o $@ -c $<
 
 main: $(OBJ)
-	sdcc -o build/ src/$@.c $(SDCCOPTS) $^
+	$(SDCC) -o build/ src/$@.c $(SDCCOPTS) $^
 	cp build/$@.ihx $@.hex
 	
 flash:
-	$(STCGAL) -p $(STCGALPORT) -P stc15a -t $(SYSCLK) $(STCGALOPTS) $(FLASHFILE)
+	$(STCGAL) -p $(STCGALPORT) -t $(SYSCLK) $(STCGALOPTS) $(FLASHFILE)
 
 clean:
 	rm -f *.ihx *.hex *.bin
