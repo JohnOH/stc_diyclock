@@ -14,6 +14,78 @@
 #define LED_h   0x12
 #define LED_dp  0x13
 
+#if defined HW_MODEL_D
+//This model has a one piece 4 digit common cathode display.
+const uint8_t
+#ifndef WITHOUT_LEDTABLE_RELOC
+__at (0x1000)
+#endif
+ledtable[]
+ = {
+    // digit to led digit lookup table
+    // dp,g,f,e,d,c,b,a
+    0b00111111, // 0
+    0b00000110, // 1
+    0b01011011, // 2
+    0b01001111, // 3
+    0b01100110, // 4
+    0b01101101, // 5
+    0b01111101, // 6
+    0b00000111, // 7
+    0b01111111, // 8
+#ifdef WITH_ALT_LED9
+    0b01101111, // 9 with d segment
+#else
+    0b01100111, // 9 without d segment
+#endif
+    0b01110111, // A
+    0b01111100, // b
+    0b00111001, // C
+    0b01011110, // d
+    0b01111001, // E
+    0b01110001, // F
+    0b00000000, // 0x10 - ' '
+    0b01000000, // 0x11 - '-'
+    0b01110100, // 0x12 - 'h'
+    0b10000000, // 0x13 - '.'
+};
+
+// Same but with abc <-> def
+
+const uint8_t
+#ifndef WITHOUT_LEDTABLE_RELOC
+__at (0x1100)
+#endif
+ledtable2[]
+ ={
+    0b00111111, // 0
+    0b00000110, // 1
+    0b01011011, // 2
+    0b01001111, // 3
+    0b01100110, // 4
+    0b01101101, // 5
+    0b01111101, // 6
+    0b00000111, // 7
+    0b01111111, // 8
+#ifdef WITH_ALT_LED9
+    0b01101111, // 9 with d segment
+#else
+    0b01100111, // 9 without d segment
+#endif
+    0b01110111, // A
+    0b01111100, // b
+    0b00111001, // C
+    0b01011110, // d
+    0b01111001, // E
+    0b01110001, // F
+    0b00000000, // 0x10 - ' '
+    0b01000000, // 0x11 - '-'
+    0b01110100, // 0x12 - 'h'
+    0b10000000, // 0x13 - '.'
+};
+
+#else
+
 const uint8_t
 #ifndef WITHOUT_LEDTABLE_RELOC
 __at (0x1000)
@@ -81,6 +153,8 @@ ledtable2[]
     0b10011001, //     0b01110100, // 0x12 - 'h'
     0b01111111, //     0b10000000, // 0x13 - '.'
 };
+
+#endif
 
 uint8_t tmpbuf[4];
 __bit   dot0;

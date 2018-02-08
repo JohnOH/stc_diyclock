@@ -66,7 +66,8 @@ enum display_mode {
 #define NUM_DEBUG 3
 
 /* ------------------------------------------------------------------------- */
-/*
+
+#if defined DISPLAY_TEST
 void _delay_ms(uint8_t ms)
 {
     // delay function, tuned for 11.092 MHz clock
@@ -84,7 +85,7 @@ void _delay_ms(uint8_t ms)
         djnz dpl, delay$
     __endasm;
 }
-*/
+#endif
 
 uint8_t  count;     // main loop counter
 uint16_t temp;      // temperature sensor value
@@ -165,7 +166,12 @@ void timer0_isr() __interrupt 1 __using 1
     // auto dimming, skip lighting for some cycles
     if (displaycounter % lightval < 4 ) {
         // fill digits
+#if defined HW_MODEL_D
+        //The segments are in backward order in this model.
+        LED_SEGMENT_PORT = dbuf[3 - digit];
+#else
         LED_SEGMENT_PORT = dbuf[digit];
+#endif
         // turn on selected digit, set low
         LED_DIGIT_ON(digit);
     }
@@ -345,6 +351,23 @@ void dot3display(__bit pm)
 /*********************************************/
 int main()
 {
+#if defined DISPLAY_TEST
+    uint8_t i = 0;
+    uint8_t j = 0;
+    LED_DIGITS_OFF();
+    while (1)
+    {
+        for (i = 0; i < 4; i++) {
+			LED_DIGITS_PORT = ~(1 << i);
+			for (j = 0; j < 20; j++)
+            {
+				LED_SEGMENT_PORT = ledtable[j];
+				_delay_ms(255);
+			}
+			LED_DIGITS_OFF();
+		}
+    }
+#endif
     // SETUP
     // set photoresistor & ntc pins to open-drain output
     P1M1 |= (1<<ADC_LIGHT) | (1<<ADC_TEMP);
