@@ -122,7 +122,7 @@
  #undef DS_IO
  #define DS_IO    P1_1
  #undef DS_SCLK
- #define DS_SCLK  P1_1
+ #define DS_SCLK  P1_0
  // needed for asm optimizations
  #undef _DS_IO
  #define _DS_IO   _P1_1
