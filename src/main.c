@@ -369,6 +369,16 @@ int main()
     }
 #endif
     // SETUP
+#if defined HW_MODEL_D
+    //M1 M0
+    // 0 0 Bidirectional
+    // 0 1 Push-Pull
+    // 1 0 Input
+    // 1 1 Open-drain
+    //          IO CE CK
+    P1M1 = 0b00000010;
+    P1M0 = 0b00000010;
+#endif
     // set photoresistor & ntc pins to open-drain output
     P1M1 |= (1<<ADC_LIGHT) | (1<<ADC_TEMP);
     P1M0 |= (1<<ADC_LIGHT) | (1<<ADC_TEMP);
