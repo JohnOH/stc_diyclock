@@ -1,0 +1,4 @@
+#!/bin/bash
+make clean
+make CFLAGS="-D WITHOUT_LEDTABLE_RELOC -D HW_MODEL_D -D WITHOUT_ALARM -D WITHOUT_DATE" -j 8
+
