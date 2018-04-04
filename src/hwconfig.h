@@ -116,9 +116,9 @@
  #define _DS_SCLK _P1_2
 #endif
 
-#if defined HW_MODEL_D
+//#if defined HW_MODEL_D
  #undef DS_CE
- #define DS_CE    P1_1
+ #define DS_CE    P1_1 
  #undef DS_IO
  #define DS_IO    P1_2
  #undef DS_SCLK
@@ -128,6 +128,6 @@
  #define _DS_IO   _P1_2
  #undef _DS_SCLK
  #define _DS_SCLK _P1_0
-#endif
+//#endif
 
 #endif

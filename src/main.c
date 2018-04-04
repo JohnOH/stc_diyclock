@@ -376,8 +376,8 @@ int main()
     // 1 0 Input
     // 1 1 Open-drain
     //          IO CE CK
-    P1M1 = 0b00000010;
-    P1M0 = 0b00000010;
+    P1M1 = 0b00000000;
+    P1M0 = 0b00000000;
 #endif
     // set photoresistor & ntc pins to open-drain output
     P1M1 |= (1<<ADC_LIGHT) | (1<<ADC_TEMP);
